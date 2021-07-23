@@ -1,0 +1,67 @@
+pipeline{
+agent any
+tools{
+     maven "maven3.6.3"
+    } 
+options{
+    timestamps() //timestamps to console log out put
+   buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5'))
+   }
+triggers{
+pollSCM('* * * * *')
+// pipelineTriggers([cron('* * * * *')])
+//pipelineTriggers([githubPush()])
+}
+    
+stages{
+   stage('checkoutcode'){
+    steps{
+     git branch: 'development', credentialsId: 'd56d514e-4f27-4a59-8a7c-9386d53cd062', 
+       url: 'https://github.com/devopstraining2021A/maven-web-application.git'
+      }
+     }
+   stage('Build'){
+    steps{
+     sh "mvn clean package"
+    }
+    }
+    
+    stage('ExecuteSonarQubeReport'){
+     steps{
+     sh "mvn clean sonar:sonar"
+    }
+    }
+    
+    stage('UploadArtifactintonexus'){
+     steps{
+     sh "mvn clean deploy"
+     }
+     }
+     
+    stage('DeployApplication into tomcat server'){
+     steps{
+   
+     sshagent(['8e0ebf42-81ae-4627-a9a3-72cf55e43f17']) {
+     sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.235.79.121:/opt/tomcat9/webapps/"
+      }
+    }
+    }
+} //stages closing
+post
+{
+  success{
+  emailext body: '''build is over- Success
+
+   Regards,
+   gsreddy''', subject: 'build is over- Success', to: 'ramireddy.ram78@gmail.com'
+    }
+   failure{
+   emailext body: '''build is completed- Failure
+
+    Regards,
+     gsreddy''', subject: 'build is completed-failure', to: 'ramireddy.ram78@gmail.com'
+  
+    }
+}
+
+}
