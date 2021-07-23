@@ -1,4 +1,4 @@
-node{
+node ('nodes'){
     def mavenHome = tool name: "maven3.6.3"
     properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', 
     daysToKeepStr: '', numToKeepStr: '5')), [$class: 'JobLocalConfiguration', changeReasonComment: ''], pipelineTriggers([pollSCM('* * * * *')])])
@@ -9,6 +9,7 @@ node{
     stage('Build'){
         sh "${mavenHome}/bin/mvn clean package"
     }
+    /*
     stage('ExecuteSonarqube report'){
 
    sh "${mavenHome}/bin/mvn sonar:sonar"
@@ -31,4 +32,5 @@ node{
         ***********''', subject: 'Build is over', to: 'ramireddy.ram78@gmail.com'
 }
     
+*/        
 }
