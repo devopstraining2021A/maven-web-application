@@ -8,7 +8,7 @@ options{
    buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5'))
    }
 triggers{
-pollSCM('* * * * *')
+//pollSCM('* * * * *')
 // pipelineTriggers([cron('* * * * *')])
 //pipelineTriggers([githubPush()])
 }
@@ -37,7 +37,7 @@ stages{
      sh "mvn clean deploy"
      }
      }
-     
+    /* 
     stage('DeployApplication into tomcat server'){
      steps{
    
@@ -46,7 +46,9 @@ stages{
       }
     }
     }
+    */
 } //stages closing
+/*
 post
 {
   success{
@@ -63,5 +65,5 @@ post
   
     }
 }
-
+*/
 }
