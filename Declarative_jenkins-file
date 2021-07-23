@@ -4,15 +4,16 @@ tools{
      maven "maven3.6.3"
     } 
 options{
-    timestamps() //timestamps to console log out put
+    timestamps() 
    buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5'))
    }
+   /*
 triggers{
 //pollSCM('* * * * *')
 // pipelineTriggers([cron('* * * * *')])
 //pipelineTriggers([githubPush()])
 }
-    
+ */   
 stages{
    stage('checkoutcode'){
     steps{
@@ -47,7 +48,7 @@ stages{
     }
     }
     */
-} //stages closing
+}
 /*
 post
 {
