@@ -1,0 +1,31 @@
+pipeline{
+agent any
+tools{
+     maven "maven3.6.3"
+    }   
+
+stages{
+   stage('checkoutcode'){
+    steps{
+     git branch: 'development', credentialsId: 'd56d514e-4f27-4a59-8a7c-9386d53cd062', 
+       url: 'https://github.com/devopstraining2021A/maven-web-application.git'
+      }
+     }
+   stage('Build'){
+    steps{
+     sh "mvn clean package"
+    }
+    }
+stage('ExecuteSonarQubeReport'){
+    steps{
+     sh "mvn clean sonar:soanr"
+    }
+    }
+stage('UploadArtifactintonexus'){
+    steps{
+     sh "mvn clean deploy"
+    }
+    }
+    
+    }
+    }
