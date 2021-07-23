@@ -16,16 +16,6 @@ stages{
      sh "mvn clean package"
     }
     }
-stage('ExecuteSonarQubeReport'){
-    steps{
-     sh "mvn clean sonar:soanr"
-    }
-    }
-stage('UploadArtifactintonexus'){
-    steps{
-     sh "mvn clean deploy"
-    }
-    }
-    
+
     }
     }
